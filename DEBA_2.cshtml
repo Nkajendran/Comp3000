@@ -1,0 +1,72 @@
+@model DEBA.Models.UserCredentialsController
+<style>
+  h1{text-align: center;}
+
+    * {
+        margin: 0;
+        padding: 0;
+        text-decoration: none;
+        box-sizing: border-box;
+    }
+
+    body {
+        min-height: 100vh;
+        background: greenyellow
+    }
+
+    form {
+        background-color: lightsteelblue;
+        width: 350px;
+        height: 580px;
+        padding: 75px 50px;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%,-50%);
+    }
+
+    .textBoxdiv2 {
+        padding: 25px 10px;
+    }
+
+    .textBoxdiv {
+        text-decoration: underline;
+    }
+</style>
+<head>
+    <title><Digital One Bank User Details</title>
+      
+        <link rel="stylesheet" href="DEBA_2.css" >
+  </head>
+
+  <body>
+    <form>
+      
+          <h1>Digital One Bank </h1>
+         
+         <div class="textBoxdiv2" >
+            <label for="Last Name"> Last Name :</label>
+            <p1 class="textBoxdiv"><u> @ViewData["LastName"] </u> </p1>
+         </div> 
+      
+
+         <div  class="textBoxdiv2">
+            <label for="First Name"> First Name :</label>
+            <p1 class="textBoxdiv"><u> @ViewData["Firstname"] </u> </p1>
+         </div>
+
+         <div class="textBoxdiv2" >
+            <label for="Bank Balance"> Bank Balance :</label>
+            <p1 class="textBoxdiv"><u> @ViewData["BankBalance"] </u>   </p1>
+
+         </div>
+
+         <div class="textBoxdiv2">
+            <label for="Expiration Date"> Expiration Date :</label>
+            <p1 class="textBoxdiv"><u> @ViewData["ExpirationDate"] </u> </p1>
+         </div>
+
+
+        </form>
+    </body>
+   </div>
