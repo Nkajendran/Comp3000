@@ -1,0 +1,80 @@
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        text-decoration: none;
+        box-sizing: border-box;
+    }
+
+    body {
+        min-height: 100vh;
+        background: lightcyan
+    }
+
+    form {
+        background-color: lightsteelblue;
+        width: 350px
+        height: 580px;
+        padding: 75px 50px;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%,-50%);
+    }
+
+    h1 {
+        text-align: center;
+        margin-bottom: 45px;
+        color: ghostwhite;
+        font-size: 40px;
+    }
+
+    .textBoxdiv {
+        
+        border-bottom: 2px solid white;
+        position: relative;
+        margin: 35px;
+    }
+
+        .textBoxdiv input {
+            background: none;
+            border: none;
+            outline: none;
+            width: 100%;
+            color: blanchedalmond
+        }
+
+    .loginBtn {
+        height: 45px;
+        width: 100%;
+        border: none;
+        outline: none;
+        background-color: red;
+        background-size: 200%;
+        color: bisque;
+        font-size: 15px;
+    }
+
+        .loginBtn:hover {
+            background-position: right;
+            font-size: 17px;
+        }
+</style>
+<head>
+    <title><Digital One Bank</title>
+    <link rel="stylesheet" href="DEBA.css"    
+  </head>
+  <body>
+      <form>
+           <h1><u>Digital One Bank</u> </h1>
+           <div class="textBoxdiv">
+               <input type="number" placeholder="User Number">
+            </div>
+            <div class="textBoxdiv">
+               <input type="password" placeholder="Pin Number">
+           </div>
+            <div class="loginBtn">
+        <input type="submit" value="Login" class="loginBtn">
+        </div>
+       </form>
+    </body>
