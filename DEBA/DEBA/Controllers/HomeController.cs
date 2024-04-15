@@ -31,34 +31,31 @@ namespace DEBA.Controllers
         {
             return View();
         }
+
+
         [HttpPost]
         public async Task<IActionResult> Index(UserCredentialsController users)
         {
-           
-            var User = await _context.UserCredentials.Where( i=>
-                i.UserNumber == users.UserNumber 
-                ).FirstOrDefaultAsync();
-           
-            
-            if (User == null || !verify(users.PinNumber,User.PinNumber)) 
+            var user = await _context.UserCredentials.FirstOrDefaultAsync(i => i.UserNumber == users.UserNumber);
+
+            if (user == null || !verify(users.PinNumber, user.PinNumber))
             {
-
-                TempData["Message"] = "Wrong User Number or Pin Number. Please try again";
-                return RedirectToAction("Index");
+                // Authentication failed, display alert popup
+                ViewData["error"] = "<script>showAlert();</script>";
+                return View("Index");
             }
-
-            
-            ViewData["LastName"] = Encryption.Decrypt(User.LastName, User.PinNumber);
-            ViewData["FirstName"] = Encryption.Decrypt(User.FirstName, User.PinNumber);
-            ViewData["ExpirationDate"] = Encryption.Decrypt(User.ExpirationDate, User.PinNumber);
-            ViewData["BankBalance"] = Encryption.Decrypt(User.BankBalance, User.PinNumber); 
-
-          
-
-         
-            ViewData["ID"] = User.Id;
-            return View("Deba_2");
+            else
+            {
+                // Authentication succeeded, decrypt user data and proceed to the next view
+                ViewData["LastName"] = Encryption.Decrypt(user.LastName, user.PinNumber);
+                ViewData["FirstName"] = Encryption.Decrypt(user.FirstName, user.PinNumber);
+                ViewData["ExpirationDate"] = Encryption.Decrypt(user.ExpirationDate, user.PinNumber);
+                ViewData["BankBalance"] = Encryption.Decrypt(user.BankBalance, user.PinNumber);
+                ViewData["ID"] = user.Id;
+                return View("Deba_2");
+            }
         }
+     
 
         public IActionResult Privacy()
         {   

@@ -1,3 +1,4 @@
+@model DEBA.Models.UserCredentialsController
 <style>
     * {
         margin: 0;
@@ -60,15 +61,16 @@
             font-size: 17px;
         }
 </style>
+
 <head>
     <title><Digital One Bank</title>
     <link rel="stylesheet" href="DEBA.css"    
   </head>
   <body>
-      <form>
-           <h1><u>Digital One Bank</u> </h1>
+    <form name="myForm" onsubmit="return validateForm()" method="post">
+        <h1><u>Digital One Bank</u> </h1>
            <div class="textBoxdiv">
-               <input type="number" placeholder="User Number">
+            <input type="number" name="uNum" placeholder="User Number">
             </div>
             <div class="textBoxdiv">
                <input type="password" placeholder="Pin Number">

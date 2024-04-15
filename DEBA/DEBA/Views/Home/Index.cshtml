@@ -14,8 +14,8 @@
 
     form {
         background-color: lightsteelblue;
-        width: 350px;
-        height: 580px;
+        width: 400px;
+        height: 600px;
         padding: 75px 50px;
         position: absolute;
         left: 50%;
@@ -31,21 +31,21 @@
     }
 
     .textBoxdiv {
-        border-bottom: 2px solid white;
         position: relative;
-        margin: 35px;
+        margin: 20px;
     }
 
         .textBoxdiv input {
-            background: none;
+            background:;
             border: none;
             outline: none;
             width: 100%;
-            color: blanchedalmond
+            color: black
         }
+        
 
     .loginBtn {
-        height: 45px;
+        height: 40px;
         width: 100%;
         border: none;
         outline: none;
@@ -60,23 +60,51 @@
             font-size: 17px;
         }
 </style>
+
 <head>
     <title><Digital One Bank</title>
     <link rel="stylesheet" href="DEBA.css"
 </head>
+<script>
+    
+    function validateForm() {
+       
+        let x = document.forms["myForm"]["UserNumber"].value;
+        if (x == "") {
+            alert("Name must be filled out")
+            return false;
+        }
+    }
+    function showAlert() {
+        alert("Wrong user information inputted. Please input your in correct Credentials");
+    }
+</script>
+
+
+
 <body>
-    @using (Html.BeginForm()){
+    @using (Html.BeginForm()){     
 
         <h1><u>Digital One Bank</u> </h1>
-        <div class="textBoxdiv">
-            @Html.TextBoxFor(x => x.UserNumber, new { @class = "textBoxdiv" })
+        @Html.Raw(ViewData["error"] )
+        <div >
+            <label for="UserNumber">Please Enter Your User Number:</label>
         </div>
         <div class="textBoxdiv">
-            @Html.TextBoxFor(x => x.PinNumber, new { @class = "textBoxdiv" })
+            @Html.TextBoxFor(x => x.UserNumber, new {  @class = "textBoxdiv" })
+           
+        </div>
+        <div>
+            <label for="PinNumber">Please Enter Your Pin Number:</label>
+        </div>
+        <div class="textBoxdiv">
+            @Html.PasswordFor(x => x.PinNumber, new { @class = "textBoxdiv" })
         </div>
         <div class="loginBtn">
-            <input type="submit" value="Login" class="loginBtn">
+            <input type="submit" onclick="return validateForm()" Click Me value="Login" class="loginBtn">
+            
         </div>
-        <p>@TempData["Message"]</p>
+        
     }
+    
 </body>
