@@ -8,16 +8,21 @@ namespace DEBA.Controllers
 {
     public static class Encryption
     {
-        // This constant is used to be able to  determine all of the  keysize of the encryption algorithm measured in bits.
-        // We then divide this by 8 within the code that is  below to get the equivalent number of bytes.
+        // The Keysize is the size in bytes of the key generated
         private const int Keysize = 128;
 
-        // This constant determines the number of iterations for the password bytes generation function.
+        // The derivativeIterations is the number of iterations the password bytes generated
         private const int DerivationIterations = 1000;
 
         public static string Encrypt(string plainText, string passPhrase)
         {
-            // Salt and IV gets randomly generated each time, but is preprended to encrypted cipher text
+            // Salt- This is a random data used to hash data
+            // Initialization-This is an input variable used to make sure the encryption taking place is more secure
+            //PlaintextBytes -This is the input text which gets converted into bytes
+            //keyBytes- These are bytes used in the key generation
+            //SymmetricKey.Blocksize- This is the size of the key.
+            //SymmetricKey.Mode- This is the mode to use.
+            //SymmetricKey.Padding- Padding added to the key.
             var Salt = Generate128BitsOfRandomEntropy();
             var IV = Generate128BitsOfRandomEntropy();
             var plainTextBytes = Encoding.UTF8.GetBytes(plainText);
@@ -52,14 +57,14 @@ namespace DEBA.Controllers
         }
         public static string Decrypt(string cipherText, string passPhrase)
         {
-            // Get the complete stream of bytes that represent:
-            // [32 bytes of Salt] + [32 bytes of IV] + [n bytes of CipherText]
+            //This section is for the decryption to display the information for the user.
+            //All the variables such as string bytes and TextBytes generates a key based on the password
             var cipherTextBytesWithSaltAndIv = Convert.FromBase64String(cipherText);
-            // Get the saltbytes by extracting the first 32 bytes from the supplied cipherText bytes.
+           
             var saltStringBytes = cipherTextBytesWithSaltAndIv.Take(Keysize / 8).ToArray();
-            // Get the IV bytes by extracting the next 32 bytes from the supplied cipherText bytes.
+           
             var ivStringBytes = cipherTextBytesWithSaltAndIv.Skip(Keysize / 8).Take(Keysize / 8).ToArray();
-            // Get the actual cipher text bytes by removing the first 64 bytes from the cipherText string.
+           
             var cipherTextBytes = cipherTextBytesWithSaltAndIv.Skip((Keysize / 8) * 2).Take(cipherTextBytesWithSaltAndIv.Length - ((Keysize / 8) * 2)).ToArray();
 
             using (var password = new Rfc2898DeriveBytes(passPhrase, saltStringBytes, DerivationIterations))
@@ -84,12 +89,14 @@ namespace DEBA.Controllers
                 }
             }
         }
+        // The final part generates random data.
+        // This function generates random data. This task is performed by the calculations.
         private static byte[] Generate128BitsOfRandomEntropy()
         {
-            var randomBytes = new byte[16]; // 16 Bytes will give us 128 bits.
+            var randomBytes = new byte[16]; 
             using (var rngCsp = new RNGCryptoServiceProvider())
             {
-                // Fill the array with cryptographically secure random bytes.
+ 
                 rngCsp.GetBytes(randomBytes);
             }
             return randomBytes;

@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using DEBA.Models;
 using Microsoft.AspNetCore.Routing;
 using UserCredentialsModels;
-
+// The first section is the coding to login to the server.
 var builder = WebApplication.CreateBuilder(args);
 IConfiguration configuration = builder.Configuration;
 var server = configuration["DbServer"] ?? "localhost";

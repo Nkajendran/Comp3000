@@ -7,6 +7,7 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 using BC=BCrypt.Net.BCrypt;
 using System.Security.Cryptography;
 
+// Initialize the variables.
 namespace DEBA.Controllers
 {
     public class HomeController : Controller
@@ -32,7 +33,7 @@ namespace DEBA.Controllers
             return View();
         }
 
-
+        // Post request handler used for the login. It logs the user in reading the credentials
         [HttpPost]
         public async Task<IActionResult> Index(UserCredentialsController users)
         {
@@ -61,7 +62,7 @@ namespace DEBA.Controllers
         {   
             return View();
         }
-       
+      // Displays the user information from the database
         [HttpPost]
         public async Task<IActionResult> DEBA1_5(UserCredentialsController users)
         {
@@ -75,12 +76,13 @@ namespace DEBA.Controllers
 
             return View();
         }
-
+        // Displays an error message 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+        //Verifying the password
         public bool verify(string text, string hash) { return BC.Verify(text, hash); }
     }
 }

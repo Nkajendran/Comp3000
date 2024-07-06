@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿//This section of the code is what links the user database table to the user application.
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
@@ -8,6 +9,8 @@ using Microsoft.AspNetCore.Mvc;
 namespace DEBA.Models
 {
     [Table("UserCredentials", Schema = "dbo")]
+
+    // This section is linking each of the colums with the table.
 
     public class UserCredentialsController
     {

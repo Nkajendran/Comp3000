@@ -1,4 +1,5 @@
-﻿@model DEBA.Models.UserCredentialsController
+﻿@*Styling of the index page.*@
+@model DEBA.Models.UserCredentialsController
 <style>
     * {
         margin: 0;
@@ -61,6 +62,8 @@
         }
 </style>
 
+@*Validation section of the coding*@
+
 <head>
     <title><Digital One Bank</title>
     <link rel="stylesheet" href="DEBA.css"
@@ -80,8 +83,8 @@
     }
 </script>
 
-
-
+@*This section links the inputs the specific database categories which when submitted are
+submitted to the controller and are used with the commands lurking the controller*@
 <body>
     @using (Html.BeginForm()){     
 
