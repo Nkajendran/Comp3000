@@ -17,7 +17,7 @@ namespace DEBA.Controllers
         public static string Encrypt(string plainText, string passPhrase)
         {
             // Salt- This is a random data used to hash data
-            // Initialization-This is an input variable used to make sure the encryption taking place is more secure
+            // Initialization Vector-This is an input variable used to make sure the encryption taking place is more secure
             //PlaintextBytes -This is the input text which gets converted into bytes
             //keyBytes- These are bytes used in the key generation
             //SymmetricKey.Blocksize- This is the size of the key.
@@ -25,62 +25,62 @@ namespace DEBA.Controllers
             //SymmetricKey.Padding- Padding added to the key.
             var Salt = Generate128BitsOfRandomEntropy();
             var IV = Generate128BitsOfRandomEntropy();
-            var plainTextBytes = Encoding.UTF8.GetBytes(plainText);
+            var PLAINTEXTBYTES = Encoding.UTF8.GetBytes(plainText);
             using (var password = new Rfc2898DeriveBytes(passPhrase, Salt, DerivationIterations))
             {
                 var keyBytes = password.GetBytes(Keysize / 8);
-                using (var symmetricKey = new RijndaelManaged())
+                using (var SYMMETRICKEY = new RijndaelManaged())
                 {
-                    symmetricKey.BlockSize = 128;
-                    symmetricKey.Mode = CipherMode.CBC;
-                    symmetricKey.Padding = PaddingMode.PKCS7;
-                    using (var encryptor = symmetricKey.CreateEncryptor(keyBytes, IV))
+                     SYMMETRICKEY.BlockSize = 128;
+                    SYMMETRICKEY.Mode = CipherMode.CBC;
+                    SYMMETRICKEY.Padding = PaddingMode.PKCS7;
+                    using (var encryptor = SYMMETRICKEY.CreateEncryptor(keyBytes, IV))
                     {
-                        using (var memoryStream = new MemoryStream())
+                        using (var MEMORY_STREAM = new MemoryStream())
                         {
-                            using (var cryptoStream = new CryptoStream(memoryStream, encryptor, CryptoStreamMode.Write))
+                            using (var cryptoStream = new CryptoStream(MEMORY_STREAM, encryptor, CryptoStreamMode.Write))
                             {
-                                cryptoStream.Write(plainTextBytes, 0, plainTextBytes.Length);
+                                cryptoStream.Write(PLAINTEXTBYTES, 0, PLAINTEXTBYTES.Length);
                                 cryptoStream.FlushFinalBlock();
 
-                                var cipherTextBytes = Salt;
-                                cipherTextBytes = cipherTextBytes.Concat(IV).ToArray();
-                                cipherTextBytes = cipherTextBytes.Concat(memoryStream.ToArray()).ToArray();
-                                memoryStream.Close();
+                                var CIPHERTEXT = Salt;
+                                CIPHERTEXT = CIPHERTEXT.Concat(IV).ToArray();
+                                CIPHERTEXT = CIPHERTEXT.Concat(MEMORY_STREAM.ToArray()).ToArray();
+                                MEMORY_STREAM.Close();
                                 cryptoStream.Close();
-                                return Convert.ToBase64String(cipherTextBytes);
+                                return Convert.ToBase64String(CIPHERTEXT);
                             }
                         }
                     }
                 }
             }
         }
-        public static string Decrypt(string cipherText, string passPhrase)
+        public static string Decrypt(string CIPHERTEXT, string passPhrase)
         {
             //This section is for the decryption to display the information for the user.
             //All the variables such as string bytes and TextBytes generates a key based on the password
-            var cipherTextBytesWithSaltAndIv = Convert.FromBase64String(cipherText);
+            var CIPHERTEXTBytesWithSaltAndIv = Convert.FromBase64String(CIPHERTEXT);
            
-            var saltStringBytes = cipherTextBytesWithSaltAndIv.Take(Keysize / 8).ToArray();
+            var saltStringBytes = CIPHERTEXTBytesWithSaltAndIv.Take(Keysize / 8).ToArray();
            
-            var ivStringBytes = cipherTextBytesWithSaltAndIv.Skip(Keysize / 8).Take(Keysize / 8).ToArray();
+            var ivStringBytes = CIPHERTEXTBytesWithSaltAndIv.Skip(Keysize / 8).Take(Keysize / 8).ToArray();
            
-            var cipherTextBytes = cipherTextBytesWithSaltAndIv.Skip((Keysize / 8) * 2).Take(cipherTextBytesWithSaltAndIv.Length - ((Keysize / 8) * 2)).ToArray();
+            var cipherTextBytes = CIPHERTEXTBytesWithSaltAndIv.Skip((Keysize / 8) * 2).Take(CIPHERTEXTBytesWithSaltAndIv.Length - ((Keysize / 8) * 2)).ToArray();
 
             using (var password = new Rfc2898DeriveBytes(passPhrase, saltStringBytes, DerivationIterations))
             {
                 var keyBytes = password.GetBytes(Keysize / 8);
-                using (var symmetricKey = new RijndaelManaged())
+                using (var SYMMETRICKEY_2 = new RijndaelManaged())
                 {
-                    symmetricKey.BlockSize = 128;
-                    symmetricKey.Mode = CipherMode.CBC;
-                    symmetricKey.Padding = PaddingMode.PKCS7;
-                    using (var decryptor = symmetricKey.CreateDecryptor(keyBytes, ivStringBytes))
+                    SYMMETRICKEY_2.BlockSize = 128;
+                    SYMMETRICKEY_2.Mode = CipherMode.CBC;
+                    SYMMETRICKEY_2.Padding = PaddingMode.PKCS7;
+                    using (var decryptor = SYMMETRICKEY_2.CreateDecryptor(keyBytes, ivStringBytes))
                     {
-                        using (var memoryStream = new MemoryStream(cipherTextBytes))
+                        using (var MEMORYSTREAM_2 = new MemoryStream(cipherTextBytes))
                         {
-                            using (var cryptoStream = new CryptoStream(memoryStream, decryptor, CryptoStreamMode.Read))
-                            using (var streamReader = new StreamReader(cryptoStream, Encoding.UTF8))
+                            using (var cryptoStream = new CryptoStream(MEMORYSTREAM_2, decryptor, CryptoStreamMode.Read))
+                            using (var streamReader = new StreamReader(MEMORYSTREAM_2, Encoding.UTF8))
                             {
                                 return streamReader.ReadToEnd();
                             }
